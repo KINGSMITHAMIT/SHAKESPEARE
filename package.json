@@ -9,22 +9,25 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "audit:sources": "tsx scripts/audit-catalogue.ts --sources",
+    "audit:release": "tsx scripts/audit-catalogue.ts --release"
   },
   "dependencies": {
     "next": "^16.0.0",
+    "openai": "^6.0.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "openai": "^6.0.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.9.0",
+    "@playwright/test": "^1.56.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "vitest": "^3.2.0",
-    "@playwright/test": "^1.56.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^16.0.0"
+    "eslint-config-next": "^16.0.0",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0"
   }
 }

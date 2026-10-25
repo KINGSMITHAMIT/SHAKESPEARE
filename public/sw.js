@@ -1,23 +1,25 @@
-const CACHE = "bards-quill-v1";
+const CACHE = "bards-quill-v2-library";
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
       const cache = await caches.open(CACHE);
-      const response = await fetch("/", { cache: "reload" });
-      if (!response.ok) throw Error("Shell unavailable");
-      const html = await response.text();
-      const assets = [
-        ...html.matchAll(/(?:src|href)="([^"?#]+\.(?:js|css))[^" ]*"/g),
-      ].map((match) => match[1].replaceAll("&amp;", "&"));
-      await cache.addAll([
-        ...new Set([...assets, "/icon.svg", "/manifest.webmanifest"]),
-      ]);
-      await cache.put(
-        "/",
-        new Response(html, {
-          headers: { "Content-Type": "text/html; charset=utf-8" },
-        }),
-      );
+      for (const path of ["/", "/library"]) {
+        const response = await fetch(path, { cache: "reload" });
+        if (!response.ok) throw Error("Shell unavailable");
+        const html = await response.text();
+        const assets = [
+          ...html.matchAll(/(?:src|href)="([^"?#]+\.(?:js|css))[^" ]*"/g),
+        ].map((match) => match[1].replaceAll("&amp;", "&"));
+        await cache.addAll([
+          ...new Set([...assets, "/icon.svg", "/manifest.webmanifest"]),
+        ]);
+        await cache.put(
+          path,
+          new Response(html, {
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+          }),
+        );
+      }
       await self.skipWaiting();
     })(),
   );
@@ -41,9 +43,11 @@ self.addEventListener("fetch", (event) => {
   )
     return;
   if (event.request.mode === "navigate") {
+    const pathname = url.pathname.replace(/\/$/, "") || "/";
+    if (!["/", "/library"].includes(pathname)) return;
     event.respondWith(
       fetch(event.request).catch(async () => {
-        const cached = await caches.match("/");
+        const cached = await caches.match(pathname);
         return cached || Response.error();
       }),
     );

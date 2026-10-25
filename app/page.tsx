@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import LibraryPreview from "../components/LibraryPreview";
 import {
   translateLocal,
   type Style,
@@ -15,7 +16,25 @@ type Entry = Translation & {
 };
 const HISTORY = "bards-quill-history-v1";
 const examples = ["How are you?", "I love you.", "Good morning", "Thank you"];
-function Arrow(){return <svg aria-hidden="true" width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 13 13 3M4 3h9v9" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>;}
+function Arrow() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="14"
+      height="14"
+      viewBox="0 0 16 16"
+      fill="none"
+    >
+      <path
+        d="M3 13 13 3M4 3h9v9"
+        stroke="currentColor"
+        strokeWidth="1.3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 function Quill() {
   return (
     <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
@@ -190,6 +209,9 @@ export default function Home() {
         </a>
         <nav aria-label="Main navigation">
           <a href="#translator">The translator</a>
+          <a href="/library" className="mobile-library-link">
+            Dialogue library
+          </a>
           <a href="#about">Behind the quill</a>
           <button
             className="history-nav"
@@ -363,7 +385,9 @@ export default function Home() {
                   type="submit"
                 >
                   {busy ? "The quill is writing…" : "Translate"}{" "}
-                  <span aria-hidden="true"><Arrow/></span>
+                  <span aria-hidden="true">
+                    <Arrow />
+                  </span>
                 </button>
               </div>
             </div>
@@ -408,10 +432,13 @@ export default function Home() {
               }}
             >
               {example}
-              <span aria-hidden="true"><Arrow/></span>
+              <span aria-hidden="true">
+                <Arrow />
+              </span>
             </button>
           ))}
         </div>
+        <LibraryPreview />
         <section
           className="collection"
           hidden={!showHistory}

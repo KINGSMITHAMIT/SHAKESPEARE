@@ -2,6 +2,8 @@
 
 A Shakespeare-inspired English translator with faithful and dramatic prose styles, a dark theatre interface, on-device translation, optional OpenAI translation, and private device history.
 
+The new `/library` page provides searchable, attributed dramatic excerpts, expanded reading, editorial English translations, copying, direct entry links, and offline reading. It is an explicitly labeled **32-passage preview in English/German/French**, not the planned 100-entry six-language release. Source access blocks the remaining editorial work. See [the editorial record and contribution guide](docs/library-editorial.md) for exact coverage, immutable edition sources, permissions, and required next steps.
+
 ## Run locally
 
 Requires Node.js 20.9+ (Node 24 used during development) and npm.
@@ -29,9 +31,13 @@ npm run lint
 npm run build
 npx playwright install chromium
 npm run test:e2e
+npm run audit:sources
+npm run audit:release
 ```
 
 Browser tests start the production server, so build first. To use an installed Chromium instead of downloading it, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE=/usr/bin/chromium`. If the default npm cache is unavailable, use `npm ci --cache /tmp/bards-npm-cache`.
+
+The source audit compares reproduced passages to their pinned edition line ranges. The release audit currently **fails by design** because 68 entries and required language/modern-work coverage are missing; do not describe the catalogue as complete. Visiting either page online caches both page shells, so `/library?entry=hamlet-to-be` also reloads offline after readiness. External source links still need internet.
 
 ## Behavior and privacy
 
